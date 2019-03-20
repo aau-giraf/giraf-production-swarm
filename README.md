@@ -1,4 +1,4 @@
-# production-swarm
+# Giraf Production Swarm  (GPS)
 Repo for the production swarm that is serving the Giraf Project
 
 To deploy the swarm into production ssh into the master00 server and make a git pull in the repo and run the following command:
