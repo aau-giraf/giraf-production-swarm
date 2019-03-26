@@ -23,5 +23,5 @@ services:
             - backend
 
 networks:
-    frontend: # creates a new network for frontend traffic
-    backend: # creates a new network for backend traffic
+    frontend:             # creates a new network for frontend traffic
+    backend:              # creates a new network for backend traffic
