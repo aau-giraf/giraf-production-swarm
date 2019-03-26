@@ -4,25 +4,24 @@ services:
     PROXY:
         image: nginx:1.15 # this will use the latest version of 1.15.x
         ports:
-            - '80:80' # expose 80 on the host and sents it to 80 in the container
-            - '443:443' # expose 443 on the host and sents it to 443 in the container
-        volumes: # mounts the nginx config folder inside the container as readonly
-            - ./nginx/:/etc/nginx/:ro
-        networks: # uses the frontend network to pass trafic into the containers
+            - '80:80'     # expose 80 on the host and sents it to 80 in the container
+            - '443:443'   # expose 443 on the host and sents it to 443 in the container
+        volumes: # mounts the nginx config folder inside the container
+            - ./nginx/:/etc/nginx/
+        networks:         # uses the frontend network to pass trafic into the containers
             - frontend
 
     API:
-        image: giraf-api # this will use httpd:latest and should be changed to the actual API once it is ready
-        networks: # uses both the frontend and backend network
+        image: giraf-api  # this will use an locally build image of the API it sould be moved to hub.docker.com once the API is ready for production.
+        networks:         # uses both the frontend and backend network
             - frontend
             - backend
 
-    WEB:
+    DB:                   # The DB service will be changed to use the production database later once it has been migrated. The httpd image is only for testing.
         image: httpd
         networks:
-            - frontend
             - backend
-     
+
 networks:
     frontend: # creates a new network for frontend traffic
     backend: # creates a new network for backend traffic
