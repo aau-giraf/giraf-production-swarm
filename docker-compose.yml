@@ -18,24 +18,6 @@ services:
             timeout: 10s
             retries: 3
 
-    API_LEGACY:                  # API service for legacy reasons, will be removed later.
-        image: giraf/web-api:1   # This will use version 1 of the API hosted on hub.docker.com                                                             
-        networks:                # Attaches the network
-            - frontend
-            - backend
-        environment:             # Sets local envionment for dotnet
-            ASPNETCORE_ENVIRONMENT: Production
-        deploy:                  # Deploy options
-            replicas: 3          # Number of services
-        volumes:                 # Mounts the two NFS file shares into the container
-            - /swarm-nfs/cdn/pictograms/:/pictograms
-            - /swarm-nfs/api/appsettings.Develop.json:/srv/appsettings.json
-        healthcheck:             # Docker healthcheck restart of it fails three times in a row, service may be out for a maximum of 30 seconds
-            test: ["CMD-SHELL", "curl --fail http://localhost:5000 || exit 1"]
-            interval: 10s
-            timeout: 10s
-            retries: 3
-
     API_PROD:                    # API service used for production
         image: giraf/web-api:1   # This will use version 1 of the API hosted on hub.docker.com                                                             
         networks:                # Attaches the network
@@ -72,7 +54,7 @@ services:
             timeout: 10s
             retries: 3
 
-    API_TEST:                    # API service for testing new versions of the API before deploying to the other services.
+    API_TEST:                    # API service for testing new versions of the API before deploying to the other services, it should not be used for any in app development.
         image: giraf/web-api:1   # This will use version 1 of the API hosted on hub.docker.com
         networks:                # Attaches the network
             - frontend
@@ -96,7 +78,7 @@ services:
         volumes:                 # Mounts the mysql files from the NFS to the container
             - /swarm-nfs/mysql/:/var/lib/mysql/
         environment:             # MySQL root password
-            MYSQL_ROOT_PASSWORD: <password>
+            MYSQL_ROOT_PASSWORD: Giraf123
         networks:                # Attaches the network
             - backend
         deploy:                  # Deploy options
