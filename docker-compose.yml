@@ -8,6 +8,7 @@ services:
             - '443:443'          
         volumes:                 # Mounts the nginx config folder inside the container as read only
             - /swarm-nfs/nginx/:/etc/nginx/:r
+            - /swarm-nfs/certbot/:/var/www/html/
         networks:                # Attaches the network
             - frontend
         deploy:                  # Deploy options
@@ -19,7 +20,7 @@ services:
             retries: 3
 
     API_PROD:                    # API service used for production
-        image: giraf/web-api:1   # This will use version 1 of the API hosted on hub.docker.com                                                             
+        image: giraf/web-api:master-1-aspnet   # This will use version 4 of the API hosted on hub.docker.com                                                             
         networks:                # Attaches the network
             - frontend
             - backend
@@ -28,8 +29,9 @@ services:
         deploy:                  # Deploy options
             replicas: 3          # Number of services
         volumes:                 # Mounts the two NFS file shares into the container
-            - /swarm-nfs/cdn/pictograms/:/pictograms
-            - /swarm-nfs/api/appsettings.Develop.json:/srv/appsettings.json
+            - /swarm-nfs/cdn/prod/pictograms/:/pictograms
+            - /swarm-nfs/api/appsettings.Production.json:/srv/appsettings.json
+            - /swarm-nfs/api/appsettings.Production.json:/srv/out/appsettings.json
         healthcheck:             # Docker healthcheck restart of it fails three times in a row, service may be out for a maximum of 30 seconds
             test: ["CMD-SHELL", "curl --fail http://localhost:5000 || exit 1"]
             interval: 10s
@@ -37,7 +39,7 @@ services:
             retries: 3
 
     API_DEV:                     # API service used for development
-        image: giraf/web-api:1   # This will use version 1 of the API hosted on hub.docker.com                                                             
+        image: giraf/web-api:develop-1-aspnet   # This will use version 4 of the API hosted on hub.docker.com                                                             
         networks:                # Attaches the network
             - frontend
             - backend
@@ -46,8 +48,9 @@ services:
         deploy:                  # Deploy options
             replicas: 3          # Number of services
         volumes:                 # Mounts the two NFS file shares into the container
-            - /swarm-nfs/cdn/pictograms/:/pictograms
+            - /swarm-nfs/cdn/dev/pictograms/:/pictograms
             - /swarm-nfs/api/appsettings.Develop.json:/srv/appsettings.json
+            - /swarm-nfs/api/appsettings.Develop.json:/srv/out/appsettings.json
         healthcheck:             # Docker healthcheck restart of it fails three times in a row, service may be out for a maximum of 30 seconds
             test: ["CMD-SHELL", "curl --fail http://localhost:5000 || exit 1"]
             interval: 10s
@@ -55,7 +58,7 @@ services:
             retries: 3
 
     API_TEST:                    # API service for testing new versions of the API before deploying to the other services, it should not be used for any in app development.
-        image: giraf/web-api:1   # This will use version 1 of the API hosted on hub.docker.com
+        image: giraf/web-api:test-1-aspnet   # This will use version 4.1.5-aspnet of the API hosted on hub.docker.com
         networks:                # Attaches the network
             - frontend
             - backend
@@ -64,8 +67,9 @@ services:
         deploy:                  # Deploy options
             replicas: 1          # Number of services
         volumes:                 # Mounts the two NFS file shares into the container
-            - /swarm-nfs/cdn/pictograms/:/pictograms
-            - /swarm-nfs/api/appsettings.Develop.json:/srv/appsettings.json
+            - /swarm-nfs/cdn/test/pictograms/:/pictograms
+            - /swarm-nfs/api/appsettings.Testing.json:/srv/appsettings.json
+            - /swarm-nfs/api/appsettings.Testing.json:/srv/out/appsettings.json
         healthcheck:             # Docker healthcheck restart of it fails three times in a row, service may be out for a maximum of 30 seconds
             test: ["CMD-SHELL", "curl --fail http://localhost:5000 || exit 1"]
             interval: 10s
