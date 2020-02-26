@@ -2,7 +2,7 @@
 Repository for the Docker Swarm that serves the Giraf project. This repository contains the docker-compose.yml file, which dictates the structure of the swarm. The docker-compose.yml file needs to be cloned into the server to deploy the stack. After deploying the stack the compose file should be deleted as it contains the root password for the database.
 
 ## To run the swarm in production:
-To deploy the swarm into production ssh into the master00 server and make a git pull in the repo and run the following command: `docker stack deploy -c docker-compose.yml GirafStack`
+To deploy the swarm into production ssh into the master00 server and make a git pull in the repository and run the following command: `docker stack deploy -c docker-compose.yml GirafStack`
 
 Verify that the stack was deployed correctly with: `docker stack services GirafStack`
 
