@@ -65,7 +65,7 @@ services:
         environment:             # Sets local envionment for dotnet
             ASPNETCORE_ENVIRONMENT: Production
         deploy:                  # Deploy options
-            replicas: 1          # Number of services
+            replicas: 2          # Number of services
         volumes:                 # Mounts the two NFS file shares into the container
             - /swarm-nfs/cdn/test/pictograms/:/pictograms
             - /swarm-nfs/api/appsettings.Testing.json:/srv/appsettings.json
