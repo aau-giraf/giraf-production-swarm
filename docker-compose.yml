@@ -4,8 +4,8 @@ services:
     PROXY:                       # NGINX proxy service for the swarm
         image: nginx:1.15        # This will use the latest version of 1.15.x
         ports:                   # Exposes for 80 and 443 from the service to the swarm network(public)
-            - '80:80'            
-            - '443:443'          
+            - '80:80'
+            - '443:443'
         volumes:                 # Mounts the nginx config folder inside the container as read only
             - /swarm-nfs/nginx/:/etc/nginx/:r
             - /swarm-nfs/certbot/:/var/www/html/
@@ -20,7 +20,7 @@ services:
             retries: 3
 
     API_PROD:                    # API service used for production
-        image: giraf/web-api:master-1-aspnet   # This will use version 4 of the API hosted on hub.docker.com                                                             
+        image: giraf/web-api:master-1-aspnet   # This will use version 4 of the API hosted on hub.docker.com
         networks:                # Attaches the network
             - frontend
             - backend
@@ -33,13 +33,13 @@ services:
             - /swarm-nfs/api/appsettings.Production.json:/srv/appsettings.json
             - /swarm-nfs/api/appsettings.Production.json:/srv/out/appsettings.json
         healthcheck:             # Docker healthcheck restart of it fails three times in a row, service may be out for a maximum of 30 seconds
-            test: ["CMD-SHELL", "curl --fail http://localhost:5000 || exit 1"]
+            test: ["CMD-SHELL", "curl --fail http://localhost:5000/v1/Status || exit 1"]
             interval: 10s
             timeout: 10s
             retries: 3
 
     API_DEV:                     # API service used for development
-        image: giraf/web-api:develop-1-aspnet   # This will use version 4 of the API hosted on hub.docker.com                                                             
+        image: giraf/web-api:develop-1-aspnet   # This will use version 4 of the API hosted on hub.docker.com
         networks:                # Attaches the network
             - frontend
             - backend
@@ -52,7 +52,7 @@ services:
             - /swarm-nfs/api/appsettings.Develop.json:/srv/appsettings.json
             - /swarm-nfs/api/appsettings.Develop.json:/srv/out/appsettings.json
         healthcheck:             # Docker healthcheck restart of it fails three times in a row, service may be out for a maximum of 30 seconds
-            test: ["CMD-SHELL", "curl --fail http://localhost:5000 || exit 1"]
+            test: ["CMD-SHELL", "curl --fail http://localhost:5000/v1/Status || exit 1"]
             interval: 10s
             timeout: 10s
             retries: 3
@@ -71,7 +71,7 @@ services:
             - /swarm-nfs/api/appsettings.Testing.json:/srv/appsettings.json
             - /swarm-nfs/api/appsettings.Testing.json:/srv/out/appsettings.json
         healthcheck:             # Docker healthcheck restart of it fails three times in a row, service may be out for a maximum of 30 seconds
-            test: ["CMD-SHELL", "curl --fail http://localhost:5000 || exit 1"]
+            test: ["CMD-SHELL", "curl --fail http://localhost:5000/v1/Status || exit 1"]
             interval: 10s
             timeout: 10s
             retries: 3
