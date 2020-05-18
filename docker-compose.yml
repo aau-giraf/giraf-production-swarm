@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
     PROXY:                       # NGINX proxy service for the swarm
-        image: nginx:1.15        # This will use the latest version of 1.15.x
+        image: nginx:1.18        # This will use the latest version of 1.18.x
         ports:                   # Exposes for 80 and 443 from the service to the swarm network(public)
             - '80:80'
             - '443:443'
@@ -20,7 +20,7 @@ services:
             retries: 3
 
     API_PROD:                    # API service used for production
-        image: giraf/web-api:master-1-aspnet   # This will use version 4 of the API hosted on hub.docker.com
+        image: giraf/web-api:master-1-aspnet # TODO use :latest from github packages
         networks:                # Attaches the network
             - frontend
             - backend
@@ -39,7 +39,7 @@ services:
             retries: 3
 
     API_DEV:                     # API service used for development
-        image: giraf/web-api:develop-1-aspnet   # This will use version 4 of the API hosted on hub.docker.com
+        image: docker.pkg.github.com/aau-giraf/web-api/web-api:develop # Use develop tag from GitHub Packages
         networks:                # Attaches the network
             - frontend
             - backend
@@ -58,7 +58,7 @@ services:
             retries: 3
 
     API_TEST:                    # API service for testing new versions of the API before deploying to the other services, it should not be used for any in app development.
-        image: giraf/web-api:test-1-aspnet   # This will use version 4.1.5-aspnet of the API hosted on hub.docker.com
+        image: docker.pkg.github.com/aau-giraf/web-api/web-api:develop # Use develop tag from GitHub Packages
         networks:                # Attaches the network
             - frontend
             - backend
