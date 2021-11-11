@@ -44,7 +44,7 @@ services:
             - frontend
             - backend
         environment:             # Sets local envionment for dotnet
-            ASPNETCORE_ENVIRONMENT: Production
+            ASPNETCORE_ENVIRONMENT: Development
         deploy:                  # Deploy options
             replicas: 3          # Number of services
         volumes:                 # Mounts the two NFS file shares into the container
@@ -63,7 +63,7 @@ services:
             - frontend
             - backend
         environment:             # Sets local envionment for dotnet
-            ASPNETCORE_ENVIRONMENT: Production
+            ASPNETCORE_ENVIRONMENT: Staging
         deploy:                  # Deploy options
             replicas: 2          # Number of services
         volumes:                 # Mounts the two NFS file shares into the container
