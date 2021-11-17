@@ -58,7 +58,7 @@ services:
             retries: 3
 
     API_TEST:                    # API service for testing new versions of the API before deploying to the other services, it should not be used for any in app development.
-        image: docker.pkg.github.com/aau-giraf/web-api/web-api:develop # Use develop tag from GitHub Packages
+        image: docker.pkg.github.com/aau-giraf/web-api/web-api:latest # Use latest tag from GitHub Packages
         networks:                # Attaches the network
             - frontend
             - backend
