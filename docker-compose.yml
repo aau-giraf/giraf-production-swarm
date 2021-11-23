@@ -86,7 +86,7 @@ services:
         volumes:                 # Mounts the mysql files from the NFS to the container
             - /swarm-nfs/mysql/:/var/lib/mysql/
         environment:             # MySQL root password
-            - MYSQL_ROOT_PASSWORD=Giraf123
+            - MYSQL_ROOT_PASSWORD=
             - MYSQL_ROOT_HOST=%
         networks:                # Attaches the network
             - backend
