@@ -80,8 +80,6 @@ services:
         image: mysql:8.0.19
         ports:
             - '3306:3306'
-        expose:
-            - '3306'
         command: --default-authentication-plugin=mysql_native_password
         volumes:                 # Mounts the mysql files from the NFS to the container
             - /swarm-nfs/mysql/:/var/lib/mysql/
