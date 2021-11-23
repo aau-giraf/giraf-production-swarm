@@ -49,8 +49,8 @@ services:
             replicas: 3          # Number of services
         volumes:                 # Mounts the two NFS file shares into the container
             - /swarm-nfs/cdn/dev/pictograms/:/pictograms
-            - /swarm-nfs/api/appsettings.Develop.json:/srv/appsettings.json
-            - /swarm-nfs/api/appsettings.Develop.json:/srv/out/appsettings.json
+            - /swarm-nfs/api/appsettings.Development.json:/srv/appsettings.json
+            - /swarm-nfs/api/appsettings.Development.json:/srv/out/appsettings.json
         healthcheck:             # Docker healthcheck restart of it fails three times in a row, service may be out for a maximum of 30 seconds
             test: ["CMD-SHELL", "curl --fail http://localhost:5000/v1/Status || exit 1"]
             interval: 10s
@@ -68,8 +68,8 @@ services:
             replicas: 2          # Number of services
         volumes:                 # Mounts the two NFS file shares into the container
             - /swarm-nfs/cdn/test/pictograms/:/pictograms
-            - /swarm-nfs/api/appsettings.Testing.json:/srv/appsettings.json
-            - /swarm-nfs/api/appsettings.Testing.json:/srv/out/appsettings.json
+            - /swarm-nfs/api/appsettings.Staging.json:/srv/appsettings.json
+            - /swarm-nfs/api/appsettings.Staging.json:/srv/out/appsettings.json
         healthcheck:             # Docker healthcheck restart of it fails three times in a row, service may be out for a maximum of 30 seconds
             test: ["CMD-SHELL", "curl --fail http://localhost:5000/v1/Status || exit 1"]
             interval: 10s
