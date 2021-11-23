@@ -44,32 +44,32 @@ services:
             - frontend
             - backend
         environment:             # Sets local envionment for dotnet
-            ASPNETCORE_ENVIRONMENT: Production
+            ASPNETCORE_ENVIRONMENT: Development
         deploy:                  # Deploy options
             replicas: 3          # Number of services
         volumes:                 # Mounts the two NFS file shares into the container
             - /swarm-nfs/cdn/dev/pictograms/:/pictograms
-            - /swarm-nfs/api/appsettings.Develop.json:/srv/appsettings.json
-            - /swarm-nfs/api/appsettings.Develop.json:/srv/out/appsettings.json
+            - /swarm-nfs/api/appsettings.Development.json:/srv/appsettings.json
+            - /swarm-nfs/api/appsettings.Development.json:/srv/out/appsettings.json
         healthcheck:             # Docker healthcheck restart of it fails three times in a row, service may be out for a maximum of 30 seconds
             test: ["CMD-SHELL", "curl --fail http://localhost:5000/v1/Status || exit 1"]
             interval: 10s
             timeout: 10s
             retries: 3
 
-    API_TEST:                    # API service for testing new versions of the API before deploying to the other services, it should not be used for any in app development.
-        image: docker.pkg.github.com/aau-giraf/web-api/web-api:develop # Use develop tag from GitHub Packages
+    API_STAGING:                    # API service for testing new versions of the API before deploying to the other services, it should not be used for any in app development.
+        image: docker.pkg.github.com/aau-giraf/web-api/web-api:latest # Use latest tag from GitHub Packages
         networks:                # Attaches the network
             - frontend
             - backend
         environment:             # Sets local envionment for dotnet
-            ASPNETCORE_ENVIRONMENT: Production
+            ASPNETCORE_ENVIRONMENT: Staging
         deploy:                  # Deploy options
             replicas: 2          # Number of services
         volumes:                 # Mounts the two NFS file shares into the container
             - /swarm-nfs/cdn/test/pictograms/:/pictograms
-            - /swarm-nfs/api/appsettings.Testing.json:/srv/appsettings.json
-            - /swarm-nfs/api/appsettings.Testing.json:/srv/out/appsettings.json
+            - /swarm-nfs/api/appsettings.Staging.json:/srv/appsettings.json
+            - /swarm-nfs/api/appsettings.Staging.json:/srv/out/appsettings.json
         healthcheck:             # Docker healthcheck restart of it fails three times in a row, service may be out for a maximum of 30 seconds
             test: ["CMD-SHELL", "curl --fail http://localhost:5000/v1/Status || exit 1"]
             interval: 10s
@@ -78,11 +78,14 @@ services:
 
     DB:                          # The DB service will be changed to use the production database later once it has been migrated. The httpd image is only for testing.
         image: mysql:8.0.19
+        ports:
+            - '3306:3306'
         command: --default-authentication-plugin=mysql_native_password
         volumes:                 # Mounts the mysql files from the NFS to the container
             - /swarm-nfs/mysql/:/var/lib/mysql/
         environment:             # MySQL root password
-            MYSQL_ROOT_PASSWORD: Giraf123
+            - MYSQL_ROOT_PASSWORD=
+            - MYSQL_ROOT_HOST=%
         networks:                # Attaches the network
             - backend
         deploy:                  # Deploy options
