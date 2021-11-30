@@ -85,7 +85,7 @@ services:
             - /swarm-nfs/mysql/:/var/lib/mysql/
         environment:             # MySQL root password
             - MYSQL_ROOT_PASSWORD=
-            #- MYSQL_ROOT_HOST=%
+            - MYSQL_ROOT_HOST=%
         networks:                # Attaches the network
             - backend
         deploy:                  # Deploy options
