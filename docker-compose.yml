@@ -9,6 +9,7 @@ services:
         volumes:                 # Mounts the nginx config folder inside the container as read only
             - /swarm-nfs/nginx/:/etc/nginx/:r
             - /swarm-nfs/certbot/:/var/www/html/
+            - /swarm-nfs/nginx/nginx.conf:/etc/nginx/conf.d
         networks:                # Attaches the network
             - frontend
         deploy:                  # Deploy options
